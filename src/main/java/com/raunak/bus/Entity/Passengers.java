@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "passengers")
@@ -14,28 +13,25 @@ public class Passengers {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
     
-    @NotBlank(message = "bookingId is required")
     private Integer bookingId;
     
-    @NotBlank(message = "passanger Name is required")
+    private String journeyDate;
+
     private String passangerName;
 
-    @NotBlank(message = "passanger age is required")
     private Integer passangerAge;
     
-    @NotBlank(message = "Gender is required")
     private String gender;
 
-	public Passengers(Integer id, @NotBlank(message = "bookingId is required") Integer bookingId,
-			@NotBlank(message = "passanger Name is required") String passangerName,
-			@NotBlank(message = "passanger age is required") Integer passangerAge,
-			@NotBlank(message = "Gender is required") String gender) {
-		this.id = id;
-		this.bookingId = bookingId;
-		this.passangerName = passangerName;
-		this.passangerAge = passangerAge;
-		this.gender = gender;
+    private Integer fare;
+    
+    private Boolean journeyType;
+
+    private Boolean status;
+    
+	public Passengers() {
 	}
+
 
 	public Integer getId() {
 		return id;
@@ -76,6 +72,47 @@ public class Passengers {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-    
-    
+
+
+	public Integer getFare() {
+		return fare;
+	}
+
+
+	public void setFare(Integer fare) {
+		this.fare = fare;
+	}
+
+
+	public Boolean getJourneyType() {
+		return journeyType;
+	}
+
+
+	public void setJourneyType(Boolean journeyType) {
+		this.journeyType = journeyType;
+	}
+
+
+	public String getJourneyDate() {
+		return journeyDate;
+	}
+
+
+	public void setJourneyDate(String journeyDate) {
+		this.journeyDate = journeyDate;
+	}
+
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+	
+	
+    	    
 }

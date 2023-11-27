@@ -18,11 +18,9 @@ import com.raunak.bus.Service.ValidationService;
 public class UserController {
 
     private final UserService userService;
-    private final ValidationService validationService;
-
+    
     public UserController(UserService userService, ValidationService validationService) {
         this.userService = userService;
-        this.validationService = validationService;
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/all")
@@ -34,7 +32,7 @@ public class UserController {
     public ResponseEntity<Object> registerUser(@RequestBody Users user) {
     		
 			try {
-				validationService.validate(user);
+				ValidationService.validate(user);
 				return userService.createUser1(user); 
 			} catch(Exception e) {
 				return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);

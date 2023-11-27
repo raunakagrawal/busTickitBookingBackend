@@ -11,21 +11,26 @@ import java.util.Set;
 @Service
 public class ValidationService {
 
-    private final LocalValidatorFactoryBean validator;
+    private static LocalValidatorFactoryBean validator;
 
     public ValidationService(LocalValidatorFactoryBean validator) {
-        this.validator = validator;
+        ValidationService.validator = validator;
     }
 
-    public String validate(Object object) {
+    public static String validate(Object object) {
         Set<ConstraintViolation<Object>> violations = validator.validate(object);
         if (!violations.isEmpty()) {
             throw new ValidationException(buildErrorMessage(violations));
         }
-        return buildErrorMessage(violations);
+        try {
+			return buildErrorMessage(violations);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return buildErrorMessage(violations);
     }
 
-    private String buildErrorMessage(Set<ConstraintViolation<Object>> violations) {
+    private static String buildErrorMessage(Set<ConstraintViolation<Object>> violations) {
         StringBuilder errorMessage = new StringBuilder();
         for (ConstraintViolation<Object> violation : violations) {
             errorMessage.append(violation.getMessage())

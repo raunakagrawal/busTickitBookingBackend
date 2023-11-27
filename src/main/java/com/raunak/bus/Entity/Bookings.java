@@ -22,7 +22,7 @@ public class Bookings {
 	private Integer bookTo;
 	
 	@Column(name = "number_of_passanger", nullable = false, length = 20)
-	private Integer numberOfPassanger;
+	private Integer numberOfTickets;
 	
 	@Column(name = "user", nullable = false, length = 20)
 	private Integer user;
@@ -30,26 +30,21 @@ public class Bookings {
 	@Column(name = "date", nullable = false, length = 20)
 	private String date;
 	
-	@Column(name = "total_fare", nullable = false, length = 20)
-	private Integer totalFare;
-	
-	@Column(name = "accepted", nullable = false, length = 20)
-	private Boolean accepted;
-	
 	@Column(name = "distance", nullable = false, length = 20)
 	private Integer distance;
 
-	public Bookings(Integer id, Integer bookFrom, Integer bookTo, Integer numberOfPassanger, Integer user, String date,
-			Integer totalFare, Boolean accepted, Integer distance) {
+
+	public Bookings(Integer id, Integer bookFrom, Integer bookTo, Integer numberOfTickets, Integer user, String date, Integer distance) {
 		this.id = id;
 		this.bookFrom = bookFrom;
 		this.bookTo = bookTo;
-		this.numberOfPassanger = numberOfPassanger;
+		this.numberOfTickets = numberOfTickets;
 		this.user = user;
 		this.date = date;
-		this.totalFare = totalFare;
-		this.accepted = accepted;
 		this.distance = distance;
+	}
+
+	public Bookings() {
 	}
 
 	public Integer getId() {
@@ -77,11 +72,11 @@ public class Bookings {
 	}
 
 	public Integer getNumberOfPassanger() {
-		return numberOfPassanger;
+		return numberOfTickets;
 	}
 
-	public void setNumberOfPassanger(Integer numberOfPassanger) {
-		this.numberOfPassanger = numberOfPassanger;
+	public void setNumberOfPassanger(Integer numberOfTickets) {
+		this.numberOfTickets = numberOfTickets;
 	}
 
 	public Integer getUser() {
@@ -98,22 +93,6 @@ public class Bookings {
 
 	public void setDate(String date) {
 		this.date = date;
-	}
-
-	public Integer getTotalFare() {
-		return totalFare;
-	}
-
-	public void setTotalFare(Integer totalFare) {
-		this.totalFare = totalFare;
-	}
-
-	public Boolean getAccepted() {
-		return accepted;
-	}
-
-	public void setAccepted(Boolean accepted) {
-		this.accepted = accepted;
 	}
 
 	public Integer getDistance() {

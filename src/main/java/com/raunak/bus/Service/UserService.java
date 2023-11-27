@@ -60,6 +60,7 @@ public class UserService {
 	    	if(user == null) {
 	    		return null;
 	    	}
+	    	
 	    	String userPassword = user.getPassword();
 	    	String loginPassword = login.getPassword();
 	    	
@@ -97,8 +98,6 @@ public class UserService {
 			
 	        if ("1".equals(user.getRole())) {
 	            userDto.setRole("Admin");
-	        } else if ("2".equals(user.getRole())) {
-	        	userDto.setRole("Employee");
 	        } else {
 	        	userDto.setRole("Customer");
 	        }

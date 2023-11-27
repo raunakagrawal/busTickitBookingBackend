@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "cities")
@@ -19,16 +20,9 @@ public class Cities {
     @Column(nullable = false, unique = true, length = 45)
     private String cityName;
 
-    @NotBlank(message = "Distance is required")
+    @NotNull(message = "Distance is required")
     @Column(nullable = false, length = 64)
     private Integer distance;
-
-	public Cities(Integer id, @NotBlank(message = "City Name is required") String cityName,
-			@NotBlank(message = "Distance is required") Integer distance) {
-		this.id = id;
-		this.cityName = cityName;
-		this.distance = distance;
-	}
 
 	public Integer getId() {
 		return id;
