@@ -7,7 +7,9 @@ public class AdminPassangerDto {
 	private String toCity;
 	private Integer passangerId;
 	private Integer passangerAge;
+	private Integer passangerUser;
 	private String passangerName;
+	private String passangerGender;
 	private Integer fare;
 	private Boolean journeyType;
 	private Boolean status;
@@ -65,6 +67,18 @@ public class AdminPassangerDto {
 	}
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+	public String getPassangerGender() {
+		return passangerGender;
+	}
+	public void setPassangerGender(String passangerGender) {
+		this.passangerGender = passangerGender;
+	}
+	public Integer getPassangerUser() {
+		return passangerUser;
+	}
+	public void setPassangerUser(Integer passangerUser) {
+		this.passangerUser = passangerUser;
 	}
 	
 	

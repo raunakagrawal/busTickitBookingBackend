@@ -29,6 +29,10 @@ public class Passengers {
 
     private Boolean status;
     
+    private Integer daysToDelete;
+    
+    private Integer bookedByUser;
+    
 	public Passengers() {
 	}
 
@@ -112,7 +116,25 @@ public class Passengers {
 	public void setStatus(Boolean status) {
 		this.status = status;
 	}
+
+
+	public Integer getDaysToDelete() {
+		return daysToDelete;
+	}
+
+
+	public void setDaysToDelete(Integer daysToDelete) {
+		this.daysToDelete = daysToDelete;
+	}
+
+
+	public Integer getBookedByUser() {
+		return bookedByUser;
+	}
+
+
+	public void setBookedByUser(Integer bookedByUser) {
+		this.bookedByUser = bookedByUser;
+	}
 	
-	
-    	    
 }

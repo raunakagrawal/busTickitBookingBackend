@@ -1,5 +1,6 @@
 package com.raunak.bus.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.raunak.bus.Dto.AcceptBookings;
 import com.raunak.bus.Dto.AdminPassangerDto;
 import com.raunak.bus.Dto.BookingDto;
 import com.raunak.bus.Dto.PassangerDto;
 import com.raunak.bus.Entity.Bookings;
 import com.raunak.bus.Entity.Cities;
 import com.raunak.bus.Entity.Passengers;
+import com.raunak.bus.ErrorResponce.ResponseHandler;
 import com.raunak.bus.Repository.BookingRepository;
 import com.raunak.bus.Repository.CitiesRepository;
 import com.raunak.bus.Repository.PassangerRepo;
@@ -35,7 +38,7 @@ public class BookingService {
     }
 	
 	@Transactional
-    public ResponseEntity<String> createBooking(BookingDto bookingDto) {
+    public ResponseEntity<Object> createBooking(BookingDto bookingDto) {
     	Bookings booking = new Bookings();
     	booking.setBookFrom(bookingDto.getFrom());
     	booking.setBookTo(bookingDto.getDestination());
@@ -55,20 +58,23 @@ public class BookingService {
     		newPassanger.setPassangerAge(passanger.getAge());
     		newPassanger.setGender(passanger.getGender());
     		newPassanger.setFare(passanger.getFare());
+    		newPassanger.setBookedByUser(savedBooking.getUser());
+    		newPassanger.setDaysToDelete(0);
     		if(savedBooking.getDistance() < 0 ) {
     			newPassanger.setJourneyType(false);
     		} else {
     			newPassanger.setJourneyType(true);
     		}
-    		newPassanger.setStatus(false);
+    		newPassanger.setStatus(null);
     		passangerRepo.save(newPassanger);
     	}
     	
-    	return new ResponseEntity<String>("Saved", HttpStatus.OK);
+    	return ResponseHandler.generateResponse("Booking Sucessfull", HttpStatus.OK, null);
     }
 	
 	public List<AdminPassangerDto> getBookings() {
-		List<Passengers> passangers = passangerRepo.findAll();
+		
+		List<Passengers> passangers = passangerRepo.findAllByStatusFalseOrNull();
 		List<Cities> cities = citiesRepository.findAll();
 		List<AdminPassangerDto> adminPassangerDtos = new ArrayList<>();
 		
@@ -76,8 +82,8 @@ public class BookingService {
 			AdminPassangerDto adminPassangerDto = new AdminPassangerDto();
 			
 			Bookings booking = bookingRepository.findById(passanger.getBookingId()).get();		
-			adminPassangerDto.setDate(booking.getDate());
 			
+			adminPassangerDto.setPassangerUser(booking.getUser());
 			for(Cities city: cities) {
 				if(booking.getBookFrom().equals(city.getId())) {
 					adminPassangerDto.setFromCity(city.getCityName());
@@ -92,6 +98,74 @@ public class BookingService {
 			adminPassangerDto.setFare(passanger.getFare());
 			adminPassangerDto.setStatus(passanger.getStatus());
 			adminPassangerDto.setJourneyType(passanger.getJourneyType());
+			adminPassangerDto.setDate(passanger.getJourneyDate());
+			
+			if("m".equals(passanger.getGender())) {
+				adminPassangerDto.setPassangerGender("Male");
+			}else if ("f".equals(passanger.getGender())) {
+				adminPassangerDto.setPassangerGender("Female");
+			}
+			
+			adminPassangerDtos.add(adminPassangerDto);
+		}
+		return adminPassangerDtos;
+	}
+	
+	@Transactional
+	public void updateStatus(AcceptBookings  passengerIds) {
+
+        List<Passengers> acceptedPassengers= passangerRepo.findAllById(passengerIds.getPassangerIds());
+        acceptedPassengers.forEach(passenger -> passenger.setStatus(true));
+        passangerRepo.saveAll(acceptedPassengers);
+        
+        List<Passengers> waitingPassengers = passangerRepo.findByJourneyDateWithStatus(passengerIds.getDate());
+        
+        for(Passengers passenger: waitingPassengers){
+        	LocalDate date = LocalDate.parse(passenger.getJourneyDate());
+        	String newDate = date.plusDays(1).toString();
+        	passenger.setJourneyDate(newDate);
+        	passenger.setStatus(false);
+        	passenger.setDaysToDelete(passenger.getDaysToDelete()+1);
+        }
+        passangerRepo.saveAll(waitingPassengers);
+        passangerRepo.deleteWating(3);
+        
+    }
+	
+	
+	public List<AdminPassangerDto> getHistory(Integer passengerId) {
+		List<Passengers> passangers = passangerRepo.findByBookedByUser(passengerId);
+		List<Cities> cities = citiesRepository.findAll();
+		List<AdminPassangerDto> adminPassangerDtos = new ArrayList<>();
+		
+		for(Passengers passanger : passangers) {
+			AdminPassangerDto adminPassangerDto = new AdminPassangerDto();
+			
+			Bookings booking = bookingRepository.findById(passanger.getBookingId()).get();		
+			
+			adminPassangerDto.setPassangerUser(booking.getUser());
+			for(Cities city: cities) {
+				if(booking.getBookFrom().equals(city.getId())) {
+					adminPassangerDto.setFromCity(city.getCityName());
+				}
+				if(booking.getBookTo().equals(city.getId())) {
+					adminPassangerDto.setToCity(city.getCityName());
+				}
+			}
+			adminPassangerDto.setPassangerId(passanger.getId());
+			adminPassangerDto.setPassangerName(passanger.getPassangerName());
+			adminPassangerDto.setPassangerAge(passanger.getPassangerAge());
+			adminPassangerDto.setFare(passanger.getFare());
+			adminPassangerDto.setStatus(passanger.getStatus());
+			adminPassangerDto.setJourneyType(passanger.getJourneyType());
+			adminPassangerDto.setDate(passanger.getJourneyDate());
+			
+			if("m".equals(passanger.getGender())) {
+				adminPassangerDto.setPassangerGender("Male");
+			}else if ("f".equals(passanger.getGender())) {
+				adminPassangerDto.setPassangerGender("Female");
+			}
+			
 			adminPassangerDtos.add(adminPassangerDto);
 		}
 		return adminPassangerDtos;
