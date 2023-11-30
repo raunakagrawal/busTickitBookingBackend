@@ -59,8 +59,36 @@ public class Users {
     @Size(max = 20, message = "Role must be Integer")
     @Column(name = "role", nullable = false, length = 20)
     private String role;
+    
+    
 
-    @Transient
+    public Users(Integer id,
+			@Email(message = "Please provide a valid email address") @NotBlank(message = "Email is required") String email,
+			@NotBlank(message = "Password is required") @Size(min = 8, message = "Password must be at least 8 characters long") String password,
+			@NotBlank(message = "First name is required") @Size(max = 20, message = "First name must be at most 20 characters long") String firstName,
+			@NotBlank(message = "Last name is required") @Size(max = 20, message = "Last name must be at most 20 characters long") String lastName,
+			@NotBlank(message = "Mobile number is required") @Pattern(regexp = "^[0-9]+$", message = "Mobile number must contain only digits") @Size(max = 10, message = "Invalid Mobile Number") String mobileNo,
+			@NotBlank(message = "Gender is required") @Size(max = 1, message = "Invalid Gender") String gender,
+			@NotBlank(message = "Date of birth is required") String dob,
+			@NotBlank(message = "Role is required") @Size(max = 20, message = "Role must be Integer") String role,
+			String passwordConfirm) {
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.mobileNo = mobileNo;
+		this.gender = gender;
+		this.dob = dob;
+		this.role = role;
+		this.passwordConfirm = passwordConfirm;
+	}
+
+	public Users() {
+
+	}
+
+	@Transient
     private String passwordConfirm;
 	
 	public Integer getId() {
@@ -143,4 +171,5 @@ public class Users {
 	public void setPasswordConfirm(String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
 	}
+	
 }

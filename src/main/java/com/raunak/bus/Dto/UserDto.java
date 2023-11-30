@@ -21,11 +21,8 @@ public class UserDto {
     public UserDto() {
     }
 
-
-
 	public UserDto(Integer id, String fullName, String email, String mobileNo, String gender, String role, Integer age,
 			String dob) {
-		super();
 		this.id = id;
 		this.fullName = fullName;
 		this.email = email;
@@ -35,8 +32,6 @@ public class UserDto {
 		this.age = age;
 		this.dob = dob;
 	}
-
-
 
 	public String getDob() {
 		return dob;

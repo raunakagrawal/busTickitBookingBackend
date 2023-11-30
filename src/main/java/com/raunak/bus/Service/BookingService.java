@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,7 @@ public class BookingService {
     	return ResponseHandler.generateResponse("Booking Sucessfull", HttpStatus.OK, null);
     }
 	
-	public List<AdminPassangerDto> getBookings() {
+	public ResponseEntity<Object> getBookings() {
 		
 		List<Passengers> passangers = passangerRepo.findAllByStatusFalseOrNull();
 		List<Cities> cities = citiesRepository.findAll();
@@ -108,11 +109,11 @@ public class BookingService {
 			
 			adminPassangerDtos.add(adminPassangerDto);
 		}
-		return adminPassangerDtos;
+		return ResponseHandler.generateResponse("Sucessfull", HttpStatus.OK, adminPassangerDtos);
 	}
-	
+	@Modifying
 	@Transactional
-	public void updateStatus(AcceptBookings  passengerIds) {
+	public ResponseEntity<Object> updateStatus(AcceptBookings  passengerIds) {
 
         List<Passengers> acceptedPassengers= passangerRepo.findAllById(passengerIds.getPassangerIds());
         acceptedPassengers.forEach(passenger -> passenger.setStatus(true));
@@ -122,18 +123,20 @@ public class BookingService {
         
         for(Passengers passenger: waitingPassengers){
         	LocalDate date = LocalDate.parse(passenger.getJourneyDate());
-        	String newDate = date.plusDays(1).toString();
+        	String newDate = date.plusDays(2).toString();
         	passenger.setJourneyDate(newDate);
         	passenger.setStatus(false);
         	passenger.setDaysToDelete(passenger.getDaysToDelete()+1);
         }
         passangerRepo.saveAll(waitingPassengers);
-        passangerRepo.deleteWating(3);
+        
+        passangerRepo.deleteByDaysToDelete(3);
+        
+        return ResponseHandler.generateResponse("Update Sucessfull", HttpStatus.OK, null);
         
     }
 	
-	
-	public List<AdminPassangerDto> getHistory(Integer passengerId) {
+	public ResponseEntity<Object> getHistory(Integer passengerId) {
 		List<Passengers> passangers = passangerRepo.findByBookedByUser(passengerId);
 		List<Cities> cities = citiesRepository.findAll();
 		List<AdminPassangerDto> adminPassangerDtos = new ArrayList<>();
@@ -168,6 +171,45 @@ public class BookingService {
 			
 			adminPassangerDtos.add(adminPassangerDto);
 		}
-		return adminPassangerDtos;
+		return ResponseHandler.generateResponse("Booking Sucessfull", HttpStatus.OK, adminPassangerDtos);
 	}
+	
+	public ResponseEntity<Object> getAllHistory() {
+		List<Passengers> passangers = passangerRepo.findAll();
+		List<Cities> cities = citiesRepository.findAll();
+		List<AdminPassangerDto> adminPassangerDtos = new ArrayList<>();
+		
+		for(Passengers passanger : passangers) {
+			AdminPassangerDto adminPassangerDto = new AdminPassangerDto();
+			
+			Bookings booking = bookingRepository.findById(passanger.getBookingId()).get();		
+			
+			adminPassangerDto.setPassangerUser(booking.getUser());
+			for(Cities city: cities) {
+				if(booking.getBookFrom().equals(city.getId())) {
+					adminPassangerDto.setFromCity(city.getCityName());
+				}
+				if(booking.getBookTo().equals(city.getId())) {
+					adminPassangerDto.setToCity(city.getCityName());
+				}
+			}
+			adminPassangerDto.setPassangerId(passanger.getId());
+			adminPassangerDto.setPassangerName(passanger.getPassangerName());
+			adminPassangerDto.setPassangerAge(passanger.getPassangerAge());
+			adminPassangerDto.setFare(passanger.getFare());
+			adminPassangerDto.setStatus(passanger.getStatus());
+			adminPassangerDto.setJourneyType(passanger.getJourneyType());
+			adminPassangerDto.setDate(passanger.getJourneyDate());
+			
+			if("m".equals(passanger.getGender())) {
+				adminPassangerDto.setPassangerGender("Male");
+			}else if ("f".equals(passanger.getGender())) {
+				adminPassangerDto.setPassangerGender("Female");
+			}
+			
+			adminPassangerDtos.add(adminPassangerDto);
+		}
+		return ResponseHandler.generateResponse("Booking Sucessfull", HttpStatus.OK, adminPassangerDtos);
+	}
+	
 }
