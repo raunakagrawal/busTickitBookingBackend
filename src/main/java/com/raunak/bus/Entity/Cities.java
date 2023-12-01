@@ -24,6 +24,16 @@ public class Cities {
     @Column(nullable = false, length = 64)
     private Integer distance;
 
+	public Cities() {
+
+	}
+
+	public Cities(Integer id, String cityName, Integer distance) {
+		this.id = id;
+		this.cityName = cityName;
+		this.distance = distance;
+	}
+
 	public Integer getId() {
 		return id;
 	}

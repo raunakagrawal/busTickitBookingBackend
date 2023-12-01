@@ -9,5 +9,8 @@ class BusTickitBookingBackendApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
+	@Test
+	public void main() {
+		BusTickitBookingBackendApplication.main(new String[] {});
+	}
 }

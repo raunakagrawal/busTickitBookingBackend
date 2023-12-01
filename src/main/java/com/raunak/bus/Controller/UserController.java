@@ -33,7 +33,7 @@ public class UserController {
     		
 			try {
 				ValidationService.validate(user);
-				return userService.createUser1(user); 
+				return userService.createUser(user); 
 			} catch(Exception e) {
 				return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
 			}

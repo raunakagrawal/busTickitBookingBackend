@@ -14,6 +14,27 @@ public class AdminPassangerDto {
 	private Boolean journeyType;
 	private Boolean status;
 	
+	public AdminPassangerDto() {
+		
+	}
+
+	public AdminPassangerDto(String date, String fromCity, String toCity, Integer passangerId, Integer passangerAge,
+			Integer passangerUser, String passangerName, String passangerGender, Integer fare, Boolean journeyType,
+			Boolean status) {
+		
+		this.date = date;
+		this.fromCity = fromCity;
+		this.toCity = toCity;
+		this.passangerId = passangerId;
+		this.passangerAge = passangerAge;
+		this.passangerUser = passangerUser;
+		this.passangerName = passangerName;
+		this.passangerGender = passangerGender;
+		this.fare = fare;
+		this.journeyType = journeyType;
+		this.status = status;
+	}
+	
 	public String getDate() {
 		return date;
 	}

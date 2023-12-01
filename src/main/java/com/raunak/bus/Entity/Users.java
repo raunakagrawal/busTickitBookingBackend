@@ -62,16 +62,7 @@ public class Users {
     
     
 
-    public Users(Integer id,
-			@Email(message = "Please provide a valid email address") @NotBlank(message = "Email is required") String email,
-			@NotBlank(message = "Password is required") @Size(min = 8, message = "Password must be at least 8 characters long") String password,
-			@NotBlank(message = "First name is required") @Size(max = 20, message = "First name must be at most 20 characters long") String firstName,
-			@NotBlank(message = "Last name is required") @Size(max = 20, message = "Last name must be at most 20 characters long") String lastName,
-			@NotBlank(message = "Mobile number is required") @Pattern(regexp = "^[0-9]+$", message = "Mobile number must contain only digits") @Size(max = 10, message = "Invalid Mobile Number") String mobileNo,
-			@NotBlank(message = "Gender is required") @Size(max = 1, message = "Invalid Gender") String gender,
-			@NotBlank(message = "Date of birth is required") String dob,
-			@NotBlank(message = "Role is required") @Size(max = 20, message = "Role must be Integer") String role,
-			String passwordConfirm) {
+    public Users(Integer id, String email, String password, String firstName, String lastName, String mobileNo, String gender, String dob, String role, String passwordConfirm) {
 		this.id = id;
 		this.email = email;
 		this.password = password;

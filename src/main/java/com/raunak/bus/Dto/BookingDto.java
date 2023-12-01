@@ -20,6 +20,19 @@ public class BookingDto {
     
     private List<PassangerDto> tickets;
 
+
+	public BookingDto(Integer id, Integer destination, Integer from, Integer numberOfTickets, String journeyDate,
+			Integer user, Integer distance, List<PassangerDto> tickets) {
+		this.id = id;
+		this.destination = destination;
+		this.from = from;
+		this.numberOfTickets = numberOfTickets;
+		this.user = user;
+		this.journeyDate = journeyDate;
+		this.distance = distance;
+		this.tickets = tickets;
+	}
+
 	public Integer getId() {
 		return id;
 	}

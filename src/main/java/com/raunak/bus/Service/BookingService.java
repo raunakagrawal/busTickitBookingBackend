@@ -61,7 +61,7 @@ public class BookingService {
     		newPassanger.setFare(passanger.getFare());
     		newPassanger.setBookedByUser(savedBooking.getUser());
     		newPassanger.setDaysToDelete(0);
-    		if(savedBooking.getDistance() < 0 ) {
+    		if(booking.getDistance() < 0 ) {
     			newPassanger.setJourneyType(false);
     		} else {
     			newPassanger.setJourneyType(true);
@@ -111,6 +111,7 @@ public class BookingService {
 		}
 		return ResponseHandler.generateResponse("Sucessfull", HttpStatus.OK, adminPassangerDtos);
 	}
+	
 	@Modifying
 	@Transactional
 	public ResponseEntity<Object> updateStatus(AcceptBookings  passengerIds) {

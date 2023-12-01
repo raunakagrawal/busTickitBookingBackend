@@ -35,6 +35,24 @@ public class Passengers {
     
 	public Passengers() {
 	}
+	
+	public Passengers(Integer id, Integer bookingId, String journeyDate, String passangerName, Integer passangerAge,
+			String gender, Integer fare, Boolean journeyType, Boolean status, Integer daysToDelete,
+			Integer bookedByUser) {
+
+		this.id = id;
+		this.bookingId = bookingId;
+		this.journeyDate = journeyDate;
+		this.passangerName = passangerName;
+		this.passangerAge = passangerAge;
+		this.gender = gender;
+		this.fare = fare;
+		this.journeyType = journeyType;
+		this.status = status;
+		this.daysToDelete = daysToDelete;
+		this.bookedByUser = bookedByUser;
+	}
+
 
 
 	public Integer getId() {

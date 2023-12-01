@@ -5,6 +5,17 @@ public class PassangerDto {
 	private Integer age;
 	private String gender;
 	private Integer fare;
+	
+	public PassangerDto(String name, Integer age, String gender, Integer fare) {
+		super();
+		this.name = name;
+		this.age = age;
+		this.gender = gender;
+		this.fare = fare;
+	}
+	public PassangerDto() {
+
+	}
 	public String getName() {
 		return name;
 	}

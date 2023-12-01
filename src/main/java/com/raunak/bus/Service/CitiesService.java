@@ -14,9 +14,15 @@ public class CitiesService {
 
     @Autowired
     private CitiesRepository citiesRepository;
+    
+    public CitiesService(CitiesRepository citiesRepository) {
+        this.citiesRepository = citiesRepository;
+    }
 
+    public CitiesService() {
+	}
 
-    public List<Cities> getAllCities() {
+	public List<Cities> getAllCities() {
         return (List<Cities>) citiesRepository.findAll();
     }
 

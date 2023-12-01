@@ -24,32 +24,21 @@ public class UserService {
 	        this.userRepository = userRepository;
 	    }
 
-	    public UserDto createUser(UserDto userDto) {
-	    	
-	        Users user = new Users();
-	        user.setId(userDto.getId());
-	        Users savedUser = userRepository.save(user);
-	
-	        UserDto savedUserDto = new UserDto();
-	        savedUserDto.setId(savedUser.getId());
-	        return savedUserDto;
-	    }
-	    
-	    public ResponseEntity<Object> createUser1(Users user) {
+	    public ResponseEntity<Object> createUser(Users user) {
 	    	Users emailExists = userRepository.findByEmail(user.getEmail());
 	    	if (emailExists != null) {
 	    		return ResponseHandler.generateResponse("This Email is already registered.", HttpStatus.MULTI_STATUS, null);
             } else {
-	        Users u = new Users();
-	        u.setEmail(user.getEmail());
-	        u.setDob(user.getDob());
-	        u.setFirstName(user.getFirstName());
-	        u.setLastName(user.getLastName());
-	        u.setGender(user.getGender());
-	        u.setRole(user.getRole());
-	        u.setPassword(user.getPassword());
-	        u.setMobileNo(user.getMobileNo());
-	        Users savedUser = userRepository.save(u);
+	        Users newUser = new Users();
+	        newUser.setEmail(user.getEmail());
+	        newUser.setDob(user.getDob());
+	        newUser.setFirstName(user.getFirstName());
+	        newUser.setLastName(user.getLastName());
+	        newUser.setGender(user.getGender());
+	        newUser.setRole(user.getRole());
+	        newUser.setPassword(user.getPassword());
+	        newUser.setMobileNo(user.getMobileNo());
+	        Users savedUser = userRepository.save(newUser);
 	        UserDto userDto = convertToUserDto(savedUser);
 	        return ResponseHandler.generateResponse("Sucessfully Registered", HttpStatus.OK, userDto);
             }
@@ -65,7 +54,7 @@ public class UserService {
 	    	String loginPassword = login.getPassword();
 	    	
 	    	if(loginPassword.equals(userPassword)) {
-	    	UserDto userDto = convertToUserDto(user);
+	    		UserDto userDto = convertToUserDto(user);
 	    		return userDto;
 	    	}else {
 	    		return null;
@@ -84,7 +73,7 @@ public class UserService {
 	        return userDtos;
 	    }
 	
-	    private UserDto convertToUserDto(Users user) {
+	    public UserDto convertToUserDto(Users user) {
 	        UserDto userDto = new UserDto();
 	        userDto.setId(user.getId());
 	        userDto.setFullName(user.getFirstName() + " " + user.getLastName());
